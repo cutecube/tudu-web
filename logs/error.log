@@ -1,0 +1,38 @@
+[15-Mar-2013 02:48:51 UTC] PHP Fatal error:  Uncaught exception 'Zend_Application_Resource_Exception' with message 'A DB adapter was tried to retrieve, but was not configured' in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Application/Resource/Multidb.php:126
+Stack trace:
+#0 /mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/Bootstrap.php(63): Oray_Application_Resource_Multidb->getDb('site')
+#1 /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Zend/Application/Bootstrap/BootstrapAbstract.php(669): Bootstrap->_initApplication()
+#2 /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Zend/Application/Bootstrap/BootstrapAbstract.php(632): Zend_Application_Bootstrap_BootstrapAbstract->_executeResource('application')
+#3 /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Zend/Application/Bootstrap/BootstrapAbstract.php(586): Zend_Application_Bootstrap_BootstrapAbstract->_bootstrap(Array)
+#4 /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Zend/Application.php(355): Zend_Application_Bootstrap_Boots in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Application/Resource/Multidb.php on line 126
+[15-Mar-2013 02:52:13 UTC] PHP Fatal error:  Smarty error: the $compile_dir '/mnt/hgfs/project/oray/tudu/open/release-1.0.0/caches/admin.tudu.com' does not exist, or is not a directory. in /mnt/hgfs/project/oray/orayweb/trunk/library/Smarty/Smarty.class.php on line 1093
+[15-Mar-2013 02:54:07 UTC] PHP Fatal error:  Smarty error: the $compile_dir '/mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/../../../data/caches/admin.tudu.com' does not exist, or is not a directory. in /mnt/hgfs/project/oray/orayweb/trunk/library/Smarty/Smarty.class.php on line 1093
+[15-Mar-2013 02:54:44 UTC] PHP Fatal error:  Smarty error: the $compile_dir '/mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/../../../data/caches/admin.tudu.com' does not exist, or is not a directory. in /mnt/hgfs/project/oray/orayweb/trunk/library/Smarty/Smarty.class.php on line 1093
+[15-Mar-2013 03:34:34 UTC] PHP Fatal error:  Call to undefined method Dao_Md_Org_Org::getDomains() in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/controllers/IndexController.php on line 79
+[15-Mar-2013 03:34:56 UTC] PHP Notice:  Undefined index: maxquota in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/controllers/IndexController.php on line 110
+[15-Mar-2013 03:34:56 UTC] PHP Notice:  Undefined index: maxndquota in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/controllers/IndexController.php on line 111
+[15-Mar-2013 03:39:23 UTC] PHP Notice:  Undefined index: domainname in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Dao/Md/User/Record/Users.php on line 153
+[15-Mar-2013 03:39:23 UTC] PHP Notice:  Undefined index: domainname in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Dao/Md/User/Record/Users.php on line 154
+[15-Mar-2013 03:58:50 UTC] PHP Notice:  Undefined index: domainname in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Dao/Md/User/Record/UserPage.php on line 118
+[15-Mar-2013 04:00:20 UTC] PHP Notice:  Undefined index: domainname in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Dao/Md/User/Record/UserPage.php on line 118
+[15-Mar-2013 05:27:58 UTC] PHP Fatal error:  Call to undefined method Dao_Md_Org_Org::getDomains() in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/htdocs/admin.tudu.com/application/modules/user/controllers/UserController.php on line 757
+[15-Mar-2013 05:30:06 UTC] PHP Notice:  Undefined index: domainid in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Model/User/User.php on line 147
+[15-Mar-2013 05:31:32 UTC] PHP Notice:  Undefined variable: ndQuota in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Model/User/User.php on line 176
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  pfsockopen(): unable to connect to 113.105.231.36:12181 (Connection refused) in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 212
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fwrite() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 163
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 165
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 233
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  pfsockopen(): unable to connect to 113.105.231.36:12181 (Connection refused) in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 212
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fwrite() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 170
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 171
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 177
+[15-Mar-2013 05:32:46 UTC] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 99
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  pfsockopen(): unable to connect to 113.105.231.36:12181 (Connection refused) in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 212
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fwrite() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 163
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 165
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 233
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  pfsockopen(): unable to connect to 113.105.231.36:12181 (Connection refused) in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 212
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fwrite() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 170
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 171
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fgets() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 177
+[15-Mar-2013 05:47:55 UTC] PHP Warning:  fclose() expects parameter 1 to be resource, boolean given in /mnt/hgfs/project/oray/tudu/open/release-1.0.0/library/Oray/Httpsqs.php on line 99
