@@ -239,6 +239,10 @@ class Dao_Td_Attachment_File extends Oray_Dao_Abstract
             $bind['unique_id'] = $params['uniqueid'];
         }
 
+        if (isset($params['isnetdisk'])) {
+            $bind['is_netdisk'] = $params['isnetdisk'] ? 1 : 0;
+        }
+
         if (!empty($params['orgid'])) {
             $bind['org_id'] = $params['orgid'];
         }

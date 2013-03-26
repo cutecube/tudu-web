@@ -329,7 +329,7 @@ class LoginController extends TuduX_Controller_Base
      */
     public function getServer($orgId)
     {
-        return $this->options['sites']['www'];
+        return $this->options['tudu']['domain'];
     }
 
     /**

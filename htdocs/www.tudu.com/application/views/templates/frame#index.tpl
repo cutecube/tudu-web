@@ -27,7 +27,7 @@ html{overflow:hidden;height:100%}
         <form action="/tudu/" target="main" method="get">
             <input type="hidden" name="search" value="query" />
             <input type="hidden" name="cat" value="all" />
-            <p id="quick-tools">{{if $user.isadmin}}<a href="https://{{$smarty.server.HTTP_HOST}}/admin/login/?sid={{$sid}}" target="_blank" id="admin-link">{{$LANG.admin}}</a>&nbsp;|&nbsp;{{/if}}<a href="javascript:void(0)" id="lock-screen">{{$LANG.lock_screen}}</a>&nbsp;|&nbsp;<a href="javascript:void(0)" id="adv_search">{{$LANG.advsearch}}</a>&nbsp;|&nbsp;<a href="{{$options.sites.www}}/help/index.html" target="_blank">{{$LANG.help}}</a>&nbsp;-&nbsp;<a href="{{$options.sites.www}}/down/tudu_manual.pdf" target="_blank">{{$LANG.tudu_help_book}}</a>&nbsp;|&nbsp;<a href="{{$options.sites.www}}/login/logout">{{$LANG.logout}}</a></p>
+            <p id="quick-tools">{{if $user.isadmin}}<a href="//{{$smarty.server.HTTP_HOST}}/admin/login/?sid={{$sid}}" target="_blank" id="admin-link">{{$LANG.admin}}</a>&nbsp;|&nbsp;{{/if}}<a href="javascript:void(0)" id="lock-screen">{{$LANG.lock_screen}}</a>&nbsp;|&nbsp;<a href="javascript:void(0)" id="adv_search">{{$LANG.advsearch}}</a>&nbsp;|&nbsp;<a href="{{$options.sites.www}}/help/index.html" target="_blank">{{$LANG.help}}</a>&nbsp;-&nbsp;<a href="{{$options.sites.www}}/down/tudu_manual.pdf" target="_blank">{{$LANG.tudu_help_book}}</a>&nbsp;|&nbsp;<a href="{{$options.sites.www}}/login/logout">{{$LANG.logout}}</a></p>
             <div class="search_input">
                 <select style="width:95px;" name="coreseek" id="coreseek">
                     <option value="0">标题账号搜索</option>
@@ -158,51 +158,7 @@ html{overflow:hidden;height:100%}
 
 </div>
 
-
 <div id="win-ct">
-    <div id="castwin" class="pop_wrap" style="width:470px;display:none;position:absolute">
-       <div class="pop pop_linkman">
-          <div class="pop_header"><strong>{{$LANG.select_contact}}</strong><a href="javascript:void(0);" class="icon icon_close close"></a></div>
-             <div class="pop_body">
-                <div>
-                    <div class="p_body_left">
-                        <p><strong>{{$LANG.contact}}</strong></p>
-                        <div class="pop_body_inner">
-                            <div class="input_box"><input style="width:185px;" class="input_text" name="" id="contact_search" type="text" title="{{$LANG.search_user}}"><a class="icon icon_search_2"></a></div>
-                            <div class="list_box" id="contact_box">
-                            {{if 0}}
-                                <div class="groupopen"><div>快捷通讯录</div></div>
-                                <div id="q_contact"></div>
-                            {{/if}}
-                            <div id="user_select">
-                                <div class="groupopen"><div>{{$LANG.dept_cast}}</div></div>
-                                <div id="contactbox"></div>
-                            </div>
-                            <div id="group_select">
-                                <div class="groupopen"><div>{{$LANG.group}}</div></div>
-                                <div id="group_box"></div>
-                            </div>
-                            </div>
-                            <div class="list_box" id="contact_search_result" style="display:none;">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p_body_centre"></div>
-                    <div class="p_body_right">
-                        <p><strong id="mtitle"></strong></p>
-                        <div class="pop_body_inner">
-                            <div class="list_box" id="target-user">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-               </div>
-             </div>
-          <div class="pop_footer"><button type="button" name="confirm" class="btn">{{$LANG.confirm}}</button><button type="button" class="btn close">{{$LANG.cancel}}</button></div>
-       </div>
-    </div>
     <div id="searchwin" class="pop_wrap" style="width:530px;display:none;position:absolute">
        <form id="advsearch_form" action="/tudu/" target="main" method="get">
        <input type="hidden" name="search" value="adv" />
@@ -235,6 +191,7 @@ var _FILECGI = {
 	download: '{{$options.sites.file}}{{$upload.cgi.download}}',
 	swfupload: '/images/swfupload.swf'
 };
+var _ORGID = '{{$org.orgid}}';
 var _ORGNAME = '{{$org.orgname}}';
 var _SYS_LABEL_NAME = {
     inbox: '{{$LANG.label_inbox}}',

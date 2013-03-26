@@ -769,7 +769,7 @@ initPicInsert({'#insert-pic': Modify.editor, '#ch-insert-pic': Modify.chEditor} 
     auth: '{{$upload.auth}}'
 }{{/if}});
 
-Capturer.setUploadUrl('{{$options.sites.file}}{{$upload.cgi.upload}}');
+Capturer.setUploadUrl('{{$options.sites.file|default:$options.sites.www}}{{$upload.cgi.upload}}{{if !$options.sites.file}}&cookies={{$cookies}}{{/if}}');
 
 {{if !$reviewer && !$issynchro}}
 {{foreach item=accepter from=$accepters}}

@@ -4299,8 +4299,8 @@ class TuduController extends TuduX_Controller_Base
         $sid  = $this->_sessionId;
         $auth = md5($sid . $fid . $this->session->auth['logintime']);
 
-        $url = $this->options['sites']['file']
-             . $this->options['upload']['cgi']['download']
+        $url = !empty($this->options['sites']['file']) ? $this->options['sites']['file'] : $this->options['sites']['www'];
+        $url = $this->options['upload']['cgi']['download']
              . "?sid={$sid}&fid={$fid}&auth={$auth}";
 
         if ($act) {

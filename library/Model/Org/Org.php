@@ -9,7 +9,7 @@
  * @package    Model
  * @copyright  Copyright (c) 2009-2010 Shanghai Best Oray Information S&T CO., Ltd.
  * @link       http://www.oray.com/
- * @version    $Id: Org.php 2714 2013-01-23 10:19:48Z cutecube $
+ * @version    $Id: Org.php 2794 2013-03-26 06:35:42Z chenyongfa $
  */
 
 /**
@@ -49,11 +49,9 @@ class Model_Org_Org extends Model_Abstract
         'tsid'     => 1,
         'cosid'    => 1,
         'isactive' => 1,
-        'maxusers' => 100,
-        'maxquota' => 1000,
-        'maxndquota' => 1000,
         'defaultpassword' => '123456',
-        'passwordlevel'   => 1
+        'passwordlevel'   => 1,
+        'ishttps' => 0
     );
 
     /**
@@ -119,7 +117,10 @@ class Model_Org_Org extends Model_Abstract
             'a202' => 1,
             'a203' => 1,
             'a502' => 1,
-            'a204' => 1
+            'a204' => 1,
+            'a511' => 1,
+            'a512' => 1,
+            'a513' => 1
         )
     );
 
@@ -154,23 +155,13 @@ class Model_Org_Org extends Model_Abstract
         do {
             /* @var $daoOrg Dao_Md_Org_Org */
             $daoOrg    = Tudu_Dao_Manager::getDao('Dao_Md_Org_Org', Tudu_Dao_Manager::DB_MD);
-            /* @var $daoOrg Dao_Md_Org_Domain */
-            $daoDomain = Tudu_Dao_Manager::getDao('Dao_Md_Org_Domain', Tudu_Dao_Manager::DB_MD);
 
             if (empty($params['orgid'])) {
                 require_once 'Model/Org/Exception.php';
                 throw new Model_Org_Exception('Missing parameter [orgid]', self::CODE_INVALID_ORGID);
             }
 
-            $orgId      = $params['orgid'];
-            $domainName = $orgId . '.tudu.com';
-
-            $domainId = $daoDomain->getDomainId($domainName);
-
-            if (!$domainId) {
-                require_once 'Model/Org/Exception.php';
-                throw new Model_Org_Exception('Create domain failed', self::CODE_SAVE_FAILED);
-            }
+            $orgId = $params['orgid'];
 
             $orgParams = array_merge(self::$_defaultOrgParams, array('orgid' => $orgId));
             if (!empty($params['orgname'])) {
@@ -185,14 +176,12 @@ class Model_Org_Org extends Model_Abstract
                 throw new Model_Org_Exception('Create organization data failed', self::CODE_SAVE_FAILED);
             }
 
-            // 绑定域名
-            if (!$daoOrg->addDomain($orgId, $domainId)) {
-                require_once 'Model/Org/Exception.php';
-                throw new Model_Org_Exception('Bind domain failed', self::CODE_SAVE_FAILED);
-            }
+            /* @var $daoOrgInfo Dao_Md_Org_Info */
+            $daoOrgInfo = Tudu_Dao_Manager::getDao('Dao_Md_Org_Info', Tudu_Dao_Manager::DB_MD);
+            $daoOrgInfo->create(array('orgid' => $orgId, 'entirename' => $params['orgname']));
 
             // 主机头
-            if (!$daoOrg->addHost($orgId, $domainName)) {
+            if (!$daoOrg->addHost($orgId, $params['domain'])) {
                 require_once 'Model/Org/Exception.php';
                 throw new Model_Org_Exception('Create org host failed', self::CODE_SAVE_FAILED);
             }
@@ -312,7 +301,6 @@ class Model_Org_Org extends Model_Abstract
             'orgid'    => $orgId,
             'userid'   => $userId,
             'uniqueid' => $uniqueId,
-            'domainid' => $org->domainId,
             'status'   => 1,
             'isshow'   => 1
         );

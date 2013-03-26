@@ -5,7 +5,7 @@
 <title>后台登陆</title>
 <link href="{{$options.sites.www}}/css/login.css" type="text/css" rel="stylesheet" />
 <!--[if IE 6]>
-<script type="text/javascript" src="{{$options.sites.www}}/js/ie6-min.js"></script>
+<script type="text/javascript" src="{{$options.sites.www}}/js/ie6-fix.js"></script>
 <script type="text/javascript">
 DD_belatedPNG.fix('.png, background,img');
 </script>

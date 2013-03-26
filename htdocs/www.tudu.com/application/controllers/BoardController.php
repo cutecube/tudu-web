@@ -3,7 +3,7 @@
  * Board Controller
  *
  * @author Hiro
- * @version $Id: BoardController.php 2740 2013-02-06 07:14:57Z cutecube $
+ * @version $Id: BoardController.php 2790 2013-03-22 02:31:43Z chenyongfa $
  */
 
 class BoardController extends TuduX_Controller_Base
@@ -524,16 +524,13 @@ class BoardController extends TuduX_Controller_Base
 
             $action = 'update';
 
-            //$daoGroup = Oray_Dao::factory('Dao_Md_User_Group', $this->multidb->getDb());
-            //$groups = $daoGroup->getGroups(array('orgid' => $this->_user->orgId), null, 'issystem DESC');
-
             $daoClass = $this->getDao('Dao_Td_Tudu_Class');
             $classes  = $daoClass->getClassesByBoardId($this->_user->orgId, $board['boardid'], 'ordernum ASC');
 
             if($templates) {
                 $this->view->templates = $templates->toArray();
             }
-            //$this->view->groups  = $groups->toArray('groupid');
+
             $this->view->classes = $classes->toArray();
         } else {
             if (!$this->_user->getAccess()->assertEquals(Tudu_Access::PERM_CREATE_BOARD, true)) {

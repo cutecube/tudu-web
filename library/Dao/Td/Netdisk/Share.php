@@ -41,6 +41,10 @@ class Dao_Td_Netdisk_Share extends Oray_Dao_Abstract
             $where[] = 'object_id = ' . $this->_db->quote($condition['objectid']);
         }
 
+        if (!empty($condition['targetid'])) {
+            $where[] = 'target_id = ' . $this->_db->quote($condition['targetid']);
+        }
+
         if (!empty($condition['objecttype'])) {
             $where[] = 'object_type = ' . $this->_db->quote($condition['objecttype']);
         }

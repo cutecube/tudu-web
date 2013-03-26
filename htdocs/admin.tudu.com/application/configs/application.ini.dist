@@ -35,6 +35,7 @@ resources.multidb.md.adapter  = "pdo_mysql"
 resources.multidb.md.default  = 1
 resources.multidb.md.charset  = "utf8"
 resources.multidb.md.host     = ""
+resources.multidb.md.port     = "3306"
 resources.multidb.md.username = ""
 resources.multidb.md.password = ""
 resources.multidb.md.dbname   = "oray-tudu-md"
@@ -42,6 +43,7 @@ resources.multidb.md.dbname   = "oray-tudu-md"
 resources.multidb.ts1.adapter  = "pdo_mysql"
 resources.multidb.ts1.charset  = "utf8"
 resources.multidb.ts1.host     = ""
+resources.multidb.ts1.port     = "3306"
 resources.multidb.ts1.username = ""
 resources.multidb.ts1.password = ""
 resources.multidb.ts1.dbname   = "oray-tudu-ts"
@@ -49,6 +51,7 @@ resources.multidb.ts1.dbname   = "oray-tudu-ts"
 resources.multidb.app.adapter  = "pdo_mysql"
 resources.multidb.app.charset  = "utf8"
 resources.multidb.app.host     = ""
+resources.multidb.app.port     = "3306"
 resources.multidb.app.username = ""
 resources.multidb.app.password = ""
 resources.multidb.app.dbname   = ""
@@ -110,7 +113,7 @@ avatars.height  = 80
 avatars.default = ""
 
 ; Data
-data.path = WWW_ROOT "/data/tudu"
+data.path = WWW_ROOT "/data"
 
 ; Httpsqs
 httpsqs.host = ""

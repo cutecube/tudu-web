@@ -4,7 +4,7 @@
  * @copyright  Copyright (c) 2009-2010 Shanghai Best Oray Information S&T CO., Ltd.
  * @link       http://www.tudu.com/
  * @author     Oray-Yongfa
- * @version    $Id: flow.js 2484 2012-12-07 10:36:54Z cutecube $
+ * @version    $Id: flow.js 2789 2013-03-21 10:09:13Z chenyongfa $
  */
 if (typeof(getTop) != 'function') {
     function getTop() {
@@ -311,6 +311,7 @@ var Flow = {
             $('#basic-div').show();
             $('#steps-header').hide();
             $('#basic-header').show();
+            this.editor.focus();
         } else {
             $('#basic-div').hide();
             $('#steps-div').show();
@@ -647,13 +648,13 @@ var Flow = {
                     _$('#prev-select').css({'width': 250});
                 }
 
-				/*var position = _$('#position option:selected').val();
-				_$('#prev-select option').each(function(){
-					if (_$(this).val() > o.stepId) {
-						_$(this).remove();
-					}
-				});*/
-				
+                /*var position = _$('#position option:selected').val();
+                _$('#prev-select option').each(function(){
+                    if (_$(this).val() > o.stepId) {
+                        _$(this).remove();
+                    }
+                });*/
+                
                 o.stepsDialog.find('button[name="save"]').bind('click', function(){
                     var type = parseInt(_$('input[name="type"]:checked').val());
                     
@@ -1139,12 +1140,12 @@ var Flow = {
         var editorHeight = Math.max($('#content').height() + (h - ch - 15), 200);
         $('#content').css('height', editorHeight + 'px');
         this.editor = new TOP.Editor(document.getElementById('content'), {
-		    resizeType : 1,
-		    width: '100%',
-		    minHeight: 200,
-		    themeType : 'tudu',
-		    scope: window
-		}, jQuery);
+            resizeType : 1,
+            width: '100%',
+            minHeight: 200,
+            themeType : 'tudu',
+            scope: window
+        }, jQuery);
 
         // 可用人群选择控件
         this.avaliableInput = new TOP.ContactInput({
@@ -1240,82 +1241,82 @@ var Flow = {
     },
     
     initUnloadEvent: function() {
-    	var me = this;
-    	//$('a:not(.xheButton):not([href^="javascript:"]))').bind('click', _leaveDialog);
-    	TOP.getJQ()('a:not([href^="javascript:"]):not([target="_blank"])').bind('click', _leaveDialog);
-    	TOP.getJQ()('form').bind('submit', _leaveDialog);
-    	
-    	window.onunload = function(){
-			TOP.getJQ()('a').unbind('click', _leaveDialog);
-			TOP.getJQ()('form').unbind('submit', _leaveDialog);
-		};
-    	
-		// 离开页面时提示
-    	function _leaveDialog() {
-    		if (!$('#steps-div:visible').size()) {
-    			return true;
-    		}
-    		
-    		var trigger = $(this);
-    		
-    		TOP.Frame.Dialog.show({
-				title: TOP.TEXT.FLOW_LEAVE_HINT,
-				body: '<p style="padding:15px 0;margin-left:-12px"><strong>' + TOP.TEXT.COMPOSE_EXIT_SAVE_HINT + '</strong></p>',
-				buttons: [{
-					   text: TOP.TEXT.SAVE,
-					   cls: 'btn',
-					   events: {click: function(){
-							if (typeof(isnew) != 'undefined' && isnew) {
-								$('#action').val('save');
-							} else {
-								$('#action').val('send');
-							}
-							
-							TOP.window.onbeforeunload = function(){};
-							me.saveFlow(function() {
-								if (trigger[0].tagName.toLowerCase() == 'a') {
-							    	   if ((trigger[0].target && trigger[0].target == 'main')
-											|| trigger.parents('body')[0] == document.body) {
-							    		   location = trigger.attr('href');
-							    	   } else {
-							    		   TOP.location = trigger.attr('href');
-							    	   }
-							   } else {
-							       trigger.unbind('submit', _leaveDialog).submit();
-							   }
-							    
-							});
-							TOP.Frame.Dialog.close();
-					   }}
-				   },
-				   {
-					   text: TOP.TEXT.DISCARD,
-					   cls: 'btn',
-					   events: {click: function(){
-					   	   TOP.window.onbeforeunload = function(){};
-					       if (trigger[0].tagName.toLowerCase() == 'a') {
-					    	   if ((trigger[0].target && trigger[0].target == 'main')
-									|| trigger.parents('body')[0] == document.body) {
-					    		   location = trigger.attr('href');
-					    	   } else {
-					    		   TOP.location = trigger.attr('href');
-					    	   }
-					       } else {
-					    	   trigger.unbind('submit', _leaveDialog).submit();
-					       }
-					       TOP.Frame.Dialog.close();
-					   }}
-				   },
-				   {
-		               text: TOP.TEXT.CANCEL,
-		               cls: 'btn',
-		               events: {click: function(){TOP.Frame.Dialog.close()}}
-		           }
-				]
-			});
-    		
-    		return false;
-    	}
+        var me = this;
+        //$('a:not(.xheButton):not([href^="javascript:"]))').bind('click', _leaveDialog);
+        TOP.getJQ()('a:not([href^="javascript:"]):not([target="_blank"])').bind('click', _leaveDialog);
+        TOP.getJQ()('form').bind('submit', _leaveDialog);
+        
+        window.onunload = function(){
+            TOP.getJQ()('a').unbind('click', _leaveDialog);
+            TOP.getJQ()('form').unbind('submit', _leaveDialog);
+        };
+        
+        // 离开页面时提示
+        function _leaveDialog() {
+            if (!$('#steps-div:visible').size()) {
+                return true;
+            }
+            
+            var trigger = $(this);
+            
+            TOP.Frame.Dialog.show({
+                title: TOP.TEXT.FLOW_LEAVE_HINT,
+                body: '<p style="padding:15px 0;margin-left:-12px"><strong>' + TOP.TEXT.COMPOSE_EXIT_SAVE_HINT + '</strong></p>',
+                buttons: [{
+                       text: TOP.TEXT.SAVE,
+                       cls: 'btn',
+                       events: {click: function(){
+                            if (typeof(isnew) != 'undefined' && isnew) {
+                                $('#action').val('save');
+                            } else {
+                                $('#action').val('send');
+                            }
+                            
+                            TOP.window.onbeforeunload = function(){};
+                            me.saveFlow(function() {
+                                if (trigger[0].tagName.toLowerCase() == 'a') {
+                                       if ((trigger[0].target && trigger[0].target == 'main')
+                                            || trigger.parents('body')[0] == document.body) {
+                                           location = trigger.attr('href');
+                                       } else {
+                                           TOP.location = trigger.attr('href');
+                                       }
+                               } else {
+                                   trigger.unbind('submit', _leaveDialog).submit();
+                               }
+                                
+                            });
+                            TOP.Frame.Dialog.close();
+                       }}
+                   },
+                   {
+                       text: TOP.TEXT.DISCARD,
+                       cls: 'btn',
+                       events: {click: function(){
+                              TOP.window.onbeforeunload = function(){};
+                           if (trigger[0].tagName.toLowerCase() == 'a') {
+                               if ((trigger[0].target && trigger[0].target == 'main')
+                                    || trigger.parents('body')[0] == document.body) {
+                                   location = trigger.attr('href');
+                               } else {
+                                   TOP.location = trigger.attr('href');
+                               }
+                           } else {
+                               trigger.unbind('submit', _leaveDialog).submit();
+                           }
+                           TOP.Frame.Dialog.close();
+                       }}
+                   },
+                   {
+                       text: TOP.TEXT.CANCEL,
+                       cls: 'btn',
+                       events: {click: function(){TOP.Frame.Dialog.close()}}
+                   }
+                ]
+            });
+            
+            return false;
+        }
     },
     
     /**
@@ -1620,9 +1621,9 @@ var Flow = {
         $('#flow-subject').text(subject);
         $('#flow-description').text(description);
         $('#flow-elapsedtime').text(elapsedtime);
-		if (elapsedtime != '-') {
-			$('#lang-elapsedtime').show();
-		}
+        if (elapsedtime != '-') {
+            $('#lang-elapsedtime').show();
+        }
         $('#belong-board').text(boardName);
         o.setAvalible();
         o.setCc();
@@ -1646,7 +1647,7 @@ var Flow = {
             return TOP.showMessage(TOP.TEXT.TUDU_SUBJECT_IS_NULL);
         }
 
-		var desc = form.find('input[name="description"]').val(),
+        var desc = form.find('input[name="description"]').val(),
             elapsedtime = form.find('input[name="elapsedtime"]').val();
 
         if (desc == form.find('input[name="description"]').attr('title')) {
@@ -1683,11 +1684,11 @@ var Flow = {
                 form.find(':input:not([_disabled])').attr('disabled', false);
                 if (ret.success && ret.data) {
                     //location = '/flow/modify?flowid=' + ret.data.flowid;
-                	if (typeof callback == 'function') {
-                		callback.call(this);
-                	} else {
-                		location = '/flow/';
-                	}
+                    if (typeof callback == 'function') {
+                        callback.call(this);
+                    } else {
+                        location = '/flow/';
+                    }
                 }
             },
             error: function(res) {
@@ -1712,8 +1713,6 @@ var Flow = {
 
         $(obj).click(function(){
             var instance = this;
-            var title = $(this).text();
-
             var val = valInput.val();
             var selected = [], userid = null;
             if (val) {
@@ -1728,11 +1727,6 @@ var Flow = {
             } else {
                 selected = null;
             }
-
-            /*var panels = ['lastcontact', 'common', 'contact'];
-            if (order) {
-                panels = ['common'];
-            }*/
 
             var html = '<div class="pop pop_linkman"><div class="pop_header"><strong>'+TOP.TEXT.SELECT_CONTACT+'</strong><a class="icon icon_close close"></a></div><div class="pop_body"></div><div class="pop_footer"><button type="button" name="confirm" class="btn">'+TOP.TEXT.CONFIRM+'</button><button type="button" class="btn close">'+TOP.TEXT.CANCEL+'</button></div></div>';
 

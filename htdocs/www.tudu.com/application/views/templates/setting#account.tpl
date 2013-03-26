@@ -387,8 +387,8 @@ function avatarWin() {
     if (!_$.ajaxUpload || !_$.Jcrop) {
         TOP.showMessage(TOP.TEXT.LOADING_AVATAR_LIBRARY);
         _$('#uploadform').find('button, input').attr('disabled', true);
-    	TOP.loadJs('{{$options.site.tudu}}/js/jquery.ajaxupload.js', function(){
-        	TOP.loadJs('{{$options.site.tudu}}/js/jquery.Jcrop.js', function(){
+    	TOP.loadJs('{{$options.site.www}}/js/jquery.ajaxupload.js', function(){
+        	TOP.loadJs('{{$options.site.www}}/js/jquery.Jcrop.js', function(){
         		TOP.showMessage(null);
             	_$('#uploadform').find('button, input').attr('disabled', false);
             }, function(){TOP.showMessage(TOP.TEXT.LOAD_JS_ERROR, 5000);TOP.avatarWin.close();});

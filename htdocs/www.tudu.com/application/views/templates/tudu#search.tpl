@@ -123,11 +123,19 @@ $(function(){
 
     new $.autocomplete({
         target: $('#inputfrom'),
-        data: {users: this.data},
-        url: '/frame/cast',
-        onLoaded: castLoaded,
+        data: {users: TOP.Cast.get('users')},
+        loadMethod: function() {
+            var _v = this,
+                keyword = $('#inputfrom').val();
+            TOP.Cast.load(function(){
+                TOP.Contact.load(function(){
+                    _v.data.users = TOP.Cast.get('users');
+                    _v._initMatchList(keyword);
+                })
+            });
+        },
         columns: {users: ['truename', 'username', 'pinyin']},
-        width: 200,
+        width: 155,
         arrowSupport: true,
         template: {
             users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
@@ -139,11 +147,19 @@ $(function(){
 
     new $.autocomplete({
         target: $('#inputto'),
-        data: {users: this.data},
-        url: '/frame/cast',
-        onLoaded: castLoaded,
+        data: {users: TOP.Cast.get('users')},
+        loadMethod: function() {
+            var _v = this,
+                keyword = $('#inputto').val();
+            TOP.Cast.load(function(){
+                TOP.Contact.load(function(){
+                    _v.data.users = TOP.Cast.get('users');
+                    _v._initMatchList(keyword);
+                })
+            });
+        },
         columns: {users: ['truename', 'username', 'pinyin']},
-        width: 200,
+        width: 155,
         arrowSupport: true,
         template: {
             users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
@@ -176,13 +192,6 @@ function heightlight(txt, coreseek) {
 
         $(this).html(subject);
     });
-}
-
-function castLoaded(ret) {
-    TOP.Cast.get('users', ret.data.users);
-    TOP.Cast.get('depts', ret.data.depts);
-    TOP.Cast.get('groups', ret.data.groups);
-    this.data = ret.data;
 }
 -->
 </script>

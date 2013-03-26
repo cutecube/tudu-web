@@ -505,12 +505,28 @@ class Dao_Md_User_Cast extends Oray_Dao_Abstract
             $where[] = "(U.true_name LIKE {$keyword} OR UI.pinyin LIKE {$keyword})";
         }
 
-        if (!empty($condition['deptid']) && is_array($condition['deptid'])) {
-            foreach ($condition['deptid'] as $deptId) {
-                $dept[] = 'U.dept_id = ' . $this->_db->quote($deptId);
+        if (!empty($condition['deptid'])) {
+            if (is_array($condition['deptid'])) {
+                foreach ($condition['deptid'] as $deptId) {
+                    $dept[] = 'U.dept_id = ' . $this->_db->quote($deptId);
+                }
+
+                $where[] = '(' . implode(' OR ', $dept) . ')';
+            } else {
+                if ($condition['deptid'] == '^root') {
+                    $where[] = '(U.dept_id IS NULL OR U.dept_id = \'\' )';
+                } else {
+                    $where[] = 'U.dept_id = ' . $this->_db->quote($condition['deptid']);
+                }
+            }
+        }
+
+        if (!empty($condition['userids']) && is_array($condition['userids'])) {
+            foreach ($condition['userids'] as $userId) {
+                $user[] = 'U.user_id = ' . $this->_db->quote($userId);
             }
 
-            $where[] = '(' . implode(' OR ', $dept) . ')';
+            $where[] = '(' . implode(' OR ', $user) . ')';
         }
 
         // WHERE

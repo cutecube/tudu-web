@@ -399,7 +399,7 @@ $(function(){
     if (!TOP.Browser.isIE && !TOP.Browser.isFF) {
 		$('#screencp-btn').remove();
 	} else {
-		var capturer = Capturer.setUploadUrl('{{$options.sites.file}}{{$upload.cgi.upload}}');
+		var capturer = Capturer.setUploadUrl('{{$options.sites.file|default:$options.sites.www}}{{$upload.cgi.upload}}{{if !$options.sites.file}}&cookies={{$cookies}}{{/if}}');
         Capturer.setEditor(_EDITOR);
         $('#link-capture').bind('click', function(){
             if (!Capturer.getCapturer()) {

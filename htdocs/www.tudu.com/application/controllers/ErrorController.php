@@ -49,7 +49,7 @@ class ErrorController extends Zend_Controller_Action
                 $message = $errors->exception->getMessage();
                 break;
         }
-var_dump($errors->exception);exit;
+
         // Log exception, if logger available
         if ($log = $this->getLog() && $isLog) {
             //$log->crit($message, $errors->exception);

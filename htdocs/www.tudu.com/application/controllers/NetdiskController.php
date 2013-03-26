@@ -838,17 +838,21 @@ class NetdiskController extends TuduX_Controller_Base
      * @param $fid
      * @param $act
      */
-    public function getFileUrl($fid, $mod = 'netdisk', $act = null)
+    public function getFileUrl($fid, $mod = 'netdisk', $act = null, $ownerId = null)
     {
         $sid  = $this->_sessionId;
         $auth = md5($sid . $fid . $this->session->auth['logintime']);
 
-        $url = $this->options['sites']['file']
-             . $this->options['upload']['cgi']['download']
+        $url = !empty($this->options['sites']['file']) ? $this->options['sites']['file'] : $this->options['sites']['www'];
+        $url = $this->options['upload']['cgi']['download']
              . "?mod={$mod}&sid={$sid}&fid={$fid}&auth={$auth}";
 
         if ($act) {
             $url .= '&action=' . $act;
+        }
+
+        if ($ownerId) {
+            $url .= '&ownerid=' . $ownerId;
         }
 
         return $url;

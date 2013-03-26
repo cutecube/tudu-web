@@ -3,7 +3,7 @@
  * Logo Controller
  *
  * @author Hiro
- * @version $Id: FrameController.php 2721 2013-01-28 02:01:39Z cutecube $
+ * @version $Id: FrameController.php 2790 2013-03-22 02:31:43Z chenyongfa $
  */
 
 class FrameController extends TuduX_Controller_Base

@@ -1075,8 +1075,15 @@ class ComposeController extends TuduX_Controller_Base
                 }
 
                 $file = $daoNdFile->getFile(array('uniqueid' => $this->_user->uniqueId, 'fileid' => $ndfileId));
+                if (null === $file) {
+                    continue;
+                }
                 if ($file->fromFileId) {
                     $fileId = $file->fromFileId;
+                    $file   = $daoNdFile->getFile(array('uniqueid' => $file->fromUniqueId, 'fileid' => $fileId));
+                    if (null === $file) {
+                        continue;
+                    }
                 }
                 if ($file->attachFileId) {
                     $fileId = $file->attachFileId;
@@ -1086,6 +1093,7 @@ class ComposeController extends TuduX_Controller_Base
                     'uniqueid' => $this->_user->uniqueId,
                     'fileid'   => $fileId,
                     'orgid'    => $this->_user->orgId,
+                    'isnetdisk'=> 1,
                     'filename' => $file->fileName,
                     'path'     => $file->path,
                     'type'     => $file->type,
@@ -1710,8 +1718,15 @@ class ComposeController extends TuduX_Controller_Base
                 }
 
                 $file = $daoNdFile->getFile(array('uniqueid' => $this->_user->uniqueId, 'fileid' => $ndfileId));
+                if (null === $file) {
+                    continue;
+                }
                 if ($file->fromFileId) {
                     $fileId = $file->fromFileId;
+                    $file   = $daoNdFile->getFile(array('uniqueid' => $file->fromUniqueId, 'fileid' => $fileId));
+                    if (null === $file) {
+                        continue;
+                    }
                 }
                 if ($file->attachFileId) {
                     $fileId = $file->attachFileId;
@@ -1721,6 +1736,7 @@ class ComposeController extends TuduX_Controller_Base
                     'uniqueid' => $this->_user->uniqueId,
                     'fileid'   => $fileId,
                     'orgid'    => $this->_user->orgId,
+                    'isnetdisk'=> 1,
                     'filename' => $file->fileName,
                     'path'     => $file->path,
                     'type'     => $file->type,

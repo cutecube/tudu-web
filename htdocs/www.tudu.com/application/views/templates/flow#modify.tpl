@@ -289,7 +289,6 @@ if (top == this) {
 </div>
 </div>
 
-<script src="{{$options.sites.static}}/js/xheditor-1.1.9/xheditor-zh-cn.min.js?1001" type="text/javascript"></script>
 <script src="{{$options.sites.static}}/js/upload.js?1009" type="text/javascript"></script>
 <script src="{{$options.sites.static}}/js/plugins.js?1004" type="text/javascript"></script>
 <script src="{{$options.sites.static}}/js/boardselector.js?1001" type="text/javascript"></script>
@@ -320,7 +319,7 @@ $(function(){
         auth: '{{$upload.auth}}'
     }{{/if}});
 
-    Capturer.setUploadUrl('{{$options.sites.file}}{{$upload.cgi.upload}}');
+    Capturer.setUploadUrl('{{$options.sites.file|default:$options.sites.www}}{{$upload.cgi.upload}}{{if !$options.sites.file}}&cookies={{$cookies}}{{/if}}');
 });
 -->
 </script>

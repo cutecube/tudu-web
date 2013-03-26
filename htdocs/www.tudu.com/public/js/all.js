@@ -1887,39 +1887,57 @@ Frame.SearchForm = {
 							_o.close();
 						});
 						
-						new $.autocomplete({
-							target: $('#inputfrom'),
-							data: {users: _o.data},
-							url: '/frame/cast',
-					        onLoaded: _o._castLoaded,
-					        columns: {users: ['truename', 'username', 'pinyin']},
-					        width: 155,
-					        arrowSupport: true,
-					        template: {
-					        	users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
-					        },
-					        onSelect: function(item){
-				                $('#inputfrom').val(item.data.truename);
-					        }
-						});
+						var matchData = {};
+						matchData.users = Cast.get('users');
 						
 						new $.autocomplete({
-							target: $('#inputto'),
-							data: {users: _o.data},
-							url: '/frame/cast',
-					        onLoaded: _o._castLoaded,
+					        target: $('#inputfrom'),
+					        data: matchData,
+					        loadMethod: function() {
+					            var _v = this,
+					                keyword = $('#inputfrom').val();
+					            Cast.load(function(){
+					                Contact.load(function(){
+										_v.data.users = Cast.get('users');
+					                    _v._initMatchList(keyword);
+					                })
+					            });
+					        },
 					        columns: {users: ['truename', 'username', 'pinyin']},
 					        width: 155,
 					        arrowSupport: true,
 					        template: {
-					        	users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
+					            users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
 					        },
 					        onSelect: function(item){
-				                $('#inputto').val(item.data.truename);
+					            $('#inputfrom').val(item.data.truename);
 					        }
-						});
+					    });
+
+					    new $.autocomplete({
+					        target: $('#inputto'),
+					        data: matchData,
+					        loadMethod: function() {
+					            var _v = this,
+					                keyword = $('#inputto').val();
+					            Cast.load(function(){
+					                Contact.load(function(){
+										_v.data.users = Cast.get('users');
+                                        _v._initMatchList(keyword);
+					                })
+					            });
+					        },
+					        columns: {users: ['truename', 'username', 'pinyin']},
+					        width: 155,
+					        arrowSupport: true,
+					        template: {
+					            users:'{truename} <span class="gray">&lt;{username}&gt;</span>'
+					        },
+					        onSelect: function(item){
+					            $('#inputto').val(item.data.truename);
+					        }
+					    });
 					});
-					
 					$('#searchform :text, #searchform select').val('');
 				}
 			});
@@ -1933,16 +1951,6 @@ Frame.SearchForm = {
 	 */
 	close: function() {
 		this._win.close();
-	},
-	
-	/**
-	 * 加载完毕
-	 */
-	_castLoaded: function(ret) {
-		Cast.set('users', ret.data.users);
-		Cast.set('depts', ret.data.depts);
-		Cast.set('groups', ret.data.groups);
-		this.data = ret.data;
 	},
 	
 	loadClasses: function(bid, select) {
@@ -1988,403 +1996,6 @@ Frame.SearchForm = {
 		}
 		
 		o.attr('disabled', false);
-	}
-};
-
-/**
- * 组织架构/联系人选择窗口
- * 整个框架页面有且只有一个实例，第一次调用是初始化，光笔不会被销毁
- */
-Frame.CastSelector = {
-	
-	/**
-	 * 窗口jQuery对象
-	 */
-	_win: null,
-	
-	/**
-	 * 搜索输入框
-	 */
-	_search: null,
-	
-	/**
-	 * 组织架构列表
-	 */
-	_contactList: null,
-	
-	/**
-	 * 选中列表
-	 */
-	_selectList: null,
-	
-	/**
-	 * 组织架构树
-	 */
-	_tree: null,
-	
-	/**
-	 * 窗口元素ID
-	 */
-	_id: 'castwin',
-	
-	/**
-	 * 设置项目
-	 */
-	_cfg: {},
-	
-	/**
-	 * 设置参数
-	 */
-	setParam: function(key, val) {
-		this._cfg = {};
-		if (typeof(key) == 'string' && undefined != val) {
-			this._cfg[key] = val;
-		} else if (typeof(key) == 'object'){
-			for (var k in key) {
-				this._cfg[k] = key[k];
-			}
-		}
-	},
-	
-	/**
-	 * 显示窗口
-	 */
-	show: function(params) {
-		this.setParam(params);
-		
-		this._initWin();
-		
-		this._win.show();
-	},
-	
-	/**
-	 * 关闭
-	 */
-	close: function() {
-		return this._win ? this._win.close() : null;
-	},
-	
-	/**
-	 * 移动用户
-	 */
-	moveUser: function(userId) {
-		if (!this._selectList || !this._tree ) {
-			return ;
-		}
-		
-		var node = this._tree.find('u-' + userId, true),
-			sr   = this._searchList.find('#sr-' + userId),
-			selected = this._selectList.find('#t-u-' + userId);
-		
-		if (!selected.size()) {
-			node.hide();
-			if (sr.size()) {
-				sr.hide();
-			}
-			this._selectList.append('<a href="javascript:void(0)" id="t-u-'+userId+'" onclick="getTop().Frame.CastSelector.moveUser(\''+userId+'\')"><input type="hidden" name="userid[]" value="'+userId+'" />'+node.get('name')+'</a>');
-		} else {
-			node.show();
-			if (sr.size()) {
-				sr.show();
-			}
-			selected.remove();
-		}
-	},
-	
-	/**
-	 * 移动群组
-	 */
-	moveGroup: function(groupId) {
-		var item = $('#s_group_' + groupId);
-		if (!item.size()) return ;
-		
-		var parent = item.parent();
-		var target = parent.attr('id') == 'target-user' ? '#group_box' : '#target-user';
-		
-		//moveItem(item, null, target);
-		item.appendTo(target);
-		
-		if ($('#sr-group-' + groupId)) {
-			var display = parent.attr('id') == 'target-user' ? '' : 'none';
-			$('#sr-group-' + groupId).css('display', display);
-		}
-	},
-	
-	/**
-	 * 初始化组织架构列表
-	 */
-	initCastList: function() {
-		var _o = this;
-		getTop().Cast.load(function(){
-			var T = getTop(),
-				data = T.Cast.get();
-			
-			if (_o._tree == undefined) {
-				// 组织构架树
-				_o._tree = new $.tree({
-					id: 'cast-tree',
-					idKey: 'id',
-					idPrefix: 'cast-',
-					cls: 'cast-tree',
-					template: '{name}'
-				});
-				
-				_o._tree.appendTo('#contactbox');
-			}
-			
-			_o._tree.clear();
-			for (var i = 0, c = data.depts.length; i < c; i++) {
-				if (data.depts[i].deptid == '^root') {
-					data.depts[i].deptname = TOP._ORGNAME;
-				}
-				if (data.depts[i].deptid && data.depts[i].deptid.indexOf('^') != -1) {
-					data.depts[i].deptid = data.depts[i].deptid.replace('^', '_');
-				}
-				if (data.depts[i].parentid && data.depts[i].parentid.indexOf('^') != -1) {
-					data.depts[i].parentid = data.depts[i].parentid.replace('^', '_');
-				}
-				var node = new $.treenode({
-					data: {
-						id: 'd-' + data.depts[i].deptid,
-						name: data.depts[i].deptname
-					},
-					events: {
-						click: function(e){_o._tree.find(this.id.replace('cast-', ''), true).toggle();stopEventBuddle(e);}
-					}
-				});
-				
-				if (!data.depts[i].parentid || !_o._tree.find('d-' + data.depts[i].parentid, true)) {
-					_o._tree.appendNode(node);
-				} else {
-					_o._tree.find('d-' + data.depts[i].parentid, true).appendChild(node);
-				}
-			}
-			
-			var root = _o._tree.find('d-_root', true);
-			if (root) {
-				root.expand();
-			}
-			
-			for (var i = 0, c = data.users.length; i < c; i++) {
-				var node = new $.treenode({
-						data: {
-						id: 'u-' + data.users[i].userid,
-						userid: data.users[i].userid,
-						name: data.users[i].truename
-					},
-					isLeaf: true,
-					events: {
-						mouseover: function(){$(this).addClass('tree-node-over');},
-						mouseout: function(){$(this).removeClass('tree-node-over');},
-						click: function(e){
-							count = $('#target-user input[name="userid[]"]').size();
-							
-							if (_o._cfg.maxCount != null && _o._cfg.maxCount > 0
-								&& count >= _o._cfg.maxCount) {
-								showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, _o._cfg.maxCount), 2000);
-								return false;
-							}
-							
-							_o.moveUser(this.id.replace('cast-u-', ''));
-							stopEventBuddle(e);
-						}
-					}
-				});
-				
-				if (data.users[i].deptid) {
-					var dept = _o._tree.find('d-' + data.users[i].deptid, true);
-					
-					if (!dept) {
-						continue;
-					}
-					
-					dept.appendChild(node);
-				} else {
-					_o._tree.appendNode(node);
-				}
-			}
-			
-			if (_o._cfg.selected.users) {
-				for (var i = 0, c = _o._cfg.selected.users.length; i < c; i++) {
-					_o.moveUser(_o._cfg.selected.users[i]);
-				}
-			}
-		});
-	},
-	
-	/**
-	 * 初始化群组列表
-	 */
-	initGroupList: function(selected) {
-		var _o = this;
-		getTop().Cast.load(function(){
-			var groups = Cast.get('groups');
-			$('#group_box').empty();
-			if (groups && groups.length) {
-				var list = $('#group_box');
-				
-				for (var i = 0, c = groups.length; i < c; i++) {
-					var id = groups[i].groupid.replace(/[\^]/g, '-');
-					list.append('<a href="javascript:void(0)" id="s_group_'+id+'"><input type="hidden" name="groupid[]" value="' + groups[i].groupid + '" />' + groups[i].groupname + '</a>');
-				}
-				
-				if (selected) {
-					for (var i = 0, c = selected.length; i < c; i++) {
-						var id = selected[i].replace(/[\^]/g, '-');
-						//moveItem('#s_group_' + id, '#group_box', '#target-user');
-						_o.moveGroup(id);
-					}
-				}
-				
-				$('#group_box a').click(function(){
-					_o.moveGroup($(this).find(':hidden[name="groupid[]"]').val().replace(/[\^]/g, '-'));
-				});
-				
-				if (_o._cfg.selected.groups) {
-					for (var i = 0, c = _o._cfg.selected.groups.length; i < c; i++) {
-						_o.moveGroup(_o._cfg.selected.groups[i]);
-					}
-				}
-			}
-		});
-	},
-	
-	/**
-	 * 初始化窗口
-	 */
-	_initWin: function() {
-		var _o = this;
-		if (null == _o._win) {
-			_o._win = $('#' + _o._id).window({
-				width: 470,
-				draggable: true,
-				onShow: function() {
-					$('#target-user').empty();
-					
-					_o.initCastList();
-					_o.initGroupList();
-				}
-			});
-			
-			keyhint('#contact_search', 'gray');
-		}
-		
-		_o._selectList = $('#target-user');
-		_o._search     = $('#contact_search');
-		_o._contactList= $('#contact_box');
-		_o._userList   = $('#user_select');
-		_o._groupList  = $('#group_select');
-		_o._searchList = $('#contact_search_result');
-		
-		_o._userList.css('display', _o._cfg.noUser ? 'none' : '');
-		_o._groupList.css('display', _o._cfg.noGroup ? 'none' : '');
-		
-		if (_o._cfg.mtitle) {
-			$('#mtitle').text(_o._cfg.mtitle);
-		}
-		
-		if (_o._cfg.selected == undefined || !_o._cfg.selected) _o._cfg.selected = {users: null, groups: null};
-		
-		if (_o._cfg.selected.users) {
-			for (var i = 0, c = _o._cfg.selected.users.length; i < c; i++) {
-				_o.moveUser(_o._cfg.selected.users[i]);
-			}
-		}
-		
-		if (_o._cfg.selected.groups) {
-			for (var i = 0, c = _o._cfg.selected.groups.length; i < c; i++) {
-				_o.moveGroup(_o._cfg.selected.groups[i].replace(/[\^]/g, '-'));
-			}
-		}
-		
-		_o._search.unbind('keyup');
-		_o._search.bind('keyup', function(){
-			var keyword = this.value.replace(/^\s+|\s+&/, '');
-			
-			if (!keyword) {
-				_o._searchList.hide();
-				_o._contactList.show();
-				return ;
-			}
-			
-			_o._contactList.hide();
-			_o._searchList.show().empty();
-			
-			// 匹配用户
-			var users  = Cast.get('users'),
-				groups = Cast.get('groups');
-			if (users && !_o._cfg.noUser) {
-				for (var k in users) {
-					if (users[k].truename.indexOf(keyword) != -1
-						|| (users[k].pinyin && users[k].pinyin.indexOf(keyword) != -1)) {
-						_o._searchList.append('<a href="javascript:void(0)" id="sr-'+users[k].userid+'" _type="user">'+users[k].truename+'</a>');
-					}
-				}
-				
-				_o._searchList.find('a[_type="user"]').click(function(e){
-					var count = _o._selectList.find('input:hidden').size();
-					
-					if (_o._cfg.maxCount != undefined && _o._cfg.maxCount > 0
-						&& count >= _o._cfg.maxCount) {
-						showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, _o._cfg.maxCount));
-						return false;
-					}
-					
-					_o.moveUser(this.id.replace('sr-', ''));
-					stopEventBuddle(e);
-				});
-			}
-			
-			if (groups && !_o._cfg.noGroup) {
-				for (var k in groups) {
-					if (groups[k].groupname.toLowerCase().indexOf(keyword) != -1) {
-						_o._searchList.append('<a href="javascript:void(0)" id="sr-group-'+groups[k].groupid.replace(/[\^]/g, '-')+'" _type="group">'+groups[k].groupname+' <span class="gray">&lt;'+T.TEXT.GROUP+'&gt;</span></a>');
-					}
-				}
-				
-				result.find('a[_type="group"]').click(function(e){
-					var count = _o._selectList.find('input:hidden').size();
-					
-					if (_o._cfg.maxCount != undefined && _o._cfg.maxCount > 0
-						&& count >= _o._cfg.maxCount) {
-						showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, _o._cfg.maxCount));
-						return false;
-					}
-					
-					_o.moveGroup(this.id.replace('sr-group-', ''));
-					stopEventBuddle(e);
-				});
-			}
-		}).val('').blur();
-		
-		var btnConfirm = $('#castwin button[name="confirm"]');
-		btnConfirm.unbind('click');
-		if (typeof(_o._cfg.onConfirm) == 'function') {
-			btnConfirm.bind('click', function(){
-				var ret = {
-					users: [],
-					groups: []
-				};
-				_o._selectList.find(':hidden[name="userid[]"]').each(function(){
-					ret.users.push(this.value);
-				});
-				
-				_o._selectList.find(':hidden[name="groupid[]"]').each(function(){
-					ret.groups.push(this.value);
-				});
-				
-				if (_o._cfg.maxCount != undefined && _o._cfg.maxCount > 0
-					&& (ret.users.length + ret.groups.length) > _o._cfg.maxCount) {
-					return showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, opts.maxCount));
-				}
-				
-				_o._cfg.onConfirm(ret);
-				
-				_o._win.close();
-			});
-		} else {
-			btnConfirm.bind('click', function(){_o._win.close();});
-		}
 	}
 };
 
@@ -2626,6 +2237,7 @@ ContactSelector.prototype = {
 			_o = this,
 			keyword = keyword.toLowerCase();
 		this._searchTree.clear();
+		
 		if (this._castTree) {
 			var users = Cast.get('users');
 			var childOf = _o._settings.childOf;
@@ -2756,11 +2368,6 @@ ContactSelector.prototype = {
 		var count = this.getSelectedCount(),
 			_o = this;
 		
-		if (this._settings.maxCount > 0 && count >= this._settings.maxCount) {
-			showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, _o._settings.maxCount), 2000);
-			return ;
-		}
-		
 		if (from) {
 			var node = from.find(id, true);
 			if (node == null) {
@@ -2773,6 +2380,11 @@ ContactSelector.prototype = {
 		
 		if (data.email && this._resultPanel.find(':hidden[name^="email"][value="'+data.email+'"]').size()) {
 			return ;
+		}
+		
+		if (this._settings.maxCount > 0 && count >= this._settings.maxCount) {
+			showMessage(formatString(TEXT.TO_USER_SELECT_MAX_COUNT, _o._settings.maxCount), 2000);
+			return;
 		}
 		
 		this._selectIndex ++;
@@ -3088,7 +2700,7 @@ ContactSelector.prototype = {
 		
 		var keyword = this._searchInput.val().replace(/^\s+|\s+$/g, '');
 		if (keyword) {
-			this.search(keyword);
+			this.search(keyword, false);
 		}
 	},
 	
@@ -3758,9 +3370,8 @@ ContactInput.prototype = {
 	        			if (_o._settings.group) {
 		        			_v.data.group = Cast.get('groups');
 	        			}
-	        			
-	        			_v._initMatchList(keyword);
-	        		})
+						_v._initMatchList(keyword);
+	        		});
 	        		});
 	        	},
 		        columns: {
@@ -4270,11 +3881,11 @@ NetdiskPanel.prototype = {
 					
 					for (var i = 0, c = files.length; i < c; i++) {
 						var ext = files[i].filename.split('.').pop(), fileId;
-						if (files[i].fromfileid) {
-							fileId = files[i].fromfileid.replace('^', '_');
-						} else {
+						//if (files[i].fromfileid) {
+							//fileId = files[i].fromfileid.replace('^', '_');
+						//} else {
 							fileId = files[i].fileid.replace('^', '_');
-						}
+						//}
 						var node = new $.treenode({
 							data: {
 								id: 'f-' + fileId,

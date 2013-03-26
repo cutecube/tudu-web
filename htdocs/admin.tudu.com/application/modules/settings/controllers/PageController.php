@@ -9,7 +9,7 @@
  * @copyright  Copyright (c) 2009-2009 Shanghai Best Oray Information S&T CO., Ltd.
  * @link       http://www.oray.com/
  * @license    NULL
- * @version    $Id: PageController.php 2733 2013-01-31 01:41:03Z cutecube $
+ * @version    $Id: PageController.php 2787 2013-03-20 10:52:53Z chenyongfa $
  */
 
 /**
@@ -75,7 +75,7 @@ class Settings_PageController extends TuduX_Controller_Admin
 
         $org = $daoOrg->getOrg(array('orgid' => $this->_orgId));
 
-        $this->view->loginskin = $org->loginSkin;
+        $this->view->loginskin = !empty($org->loginSkin) ? $org->loginSkin : array();
     }
 
     /**
@@ -182,7 +182,7 @@ class Settings_PageController extends TuduX_Controller_Admin
         /* @var @daoOrg Dao_Md_Org_Org */
         $daoOrg   = $this->getDao('Dao_Md_Org_Org');
         $org      = $daoOrg->getOrg(array('orgid' => $this->_orgId));
-        $skinData = $org->loginSkin;
+        $skinData = !empty($org->loginSkin) ? $org->loginSkin : array();
         if (isset($skinData['color'])) {
             unset($skinData['color']);
         }
@@ -218,7 +218,7 @@ class Settings_PageController extends TuduX_Controller_Admin
         /* @var @daoOrg Dao_Md_Org_Org */
         $daoOrg   = $this->getDao('Dao_Md_Org_Org');
         $org      = $daoOrg->getOrg(array('orgid' => $this->_orgId));
-        $skinData = $org->loginSkin;
+        $skinData = !empty($org->loginSkin) ? $org->loginSkin : array();
         if (!is_array($skinData)) {
             $skinData = array();
         }
@@ -324,22 +324,14 @@ class Settings_PageController extends TuduX_Controller_Admin
         }
 
         if (is_dir($path)) {
-            $substr  = substr($fileName, 0, 1);
-            $picPath = $path . '/' . $substr;
-
-            // 实名认证组织目录是否存在，不存在则创建
-            if (!is_dir($picPath)) {
-                mkdir($picPath, 0777);
-            }
-
             // 移动文件
-            $ret = move_uploaded_file($file['tmp_name'], $picPath . '/' . $fileName);
+            $ret = move_uploaded_file($file['tmp_name'], $path . '/' . $fileName);
             if (!$ret) {
                 return $this->json(false, '上传登陆页背景图片失败', null, false);
             }
 
             // 文件路径
-            $fileUrl = $substr . '/' . $fileName;
+            $fileUrl = $fileName;
 
         }
 

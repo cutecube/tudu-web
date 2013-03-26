@@ -31,13 +31,23 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path()
 )));
 
-/** Zend_Application */
-require_once 'Zend/Application.php';
+/** Zend_Exception */
+require_once 'Zend/Exception.php';
 
-// Create application, bootstrap, and run
-$application = new Zend_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
-);
-$application->bootstrap(array('FrontController', 'view', 'multidb', 'session', 'memcache', 'application'))
-            ->run();
+try {
+    /** Zend_Application */
+    require_once 'Zend/Application.php';
+
+    // Create application, bootstrap, and run
+    $application = new Zend_Application(
+        APPLICATION_ENV,
+        APPLICATION_PATH . '/configs/application.ini'
+    );
+    $application->bootstrap(array('FrontController', 'view', 'multidb', 'session', 'memcache', 'application'))
+                ->run();
+} catch (Zend_Exception $e) {
+    if (0 != strpos($e->getMessage(), 'application.ini') || 0 != strpos($e->getFile(), 'Zend/Config/Ini.php')) {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/install.php';
+        header("location: $url");
+    }
+}

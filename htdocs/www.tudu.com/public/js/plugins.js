@@ -12,7 +12,7 @@ ScreenCapture.defaults = {
 	onStart: function() {},
 	onCaptured: function() {},
 	onUploaded: function(id, success){},
-	host: 'upload.tudu.com',
+	host: location.hostname,
 	path: '',
 	sid: ''
 };

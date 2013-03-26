@@ -5,7 +5,7 @@
 <title>图度后台</title>
 {{include file="^style.tpl"}}
 <!--[if IE 6]>
-<script type="text/javascript" src="{{$options.sites.static}}/js/ie6-min.js"></script>
+<script type="text/javascript" src="{{$options.sites.static}}/js/ie6-fix.js"></script>
 <script type="text/javascript">
 DD_belatedPNG.fix('.png, background,img');
 </script>

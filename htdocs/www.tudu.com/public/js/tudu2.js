@@ -4334,7 +4334,7 @@ var Modify = {
 	        var Win = TOP.Frame.TempWindow;
 	        Win.append(html, {
 	        	width:470,
-	        	draggalbe: true,
+	        	draggable: true,
 	        	onShow: function() {
 					Win.center();
 				},
@@ -4622,12 +4622,13 @@ var Capturer = {
 		                    eval('ret=' + response + ';');
 		                } catch (e) {}
 		
-		                if (ret.fileid) {
+		                var fileid = ret.fileid ? ret.fileid : (ret.data ? ret.data.fileid : null);
+		                if (fileid) {
 		                	if (me.editor !== null) {
 		                		//Modify.appendTOEditor(ret.fileid)
-			                    var url = '/attachment/img?fid=' + ret.fileid;
+			                    var url = '/attachment/img?fid=' + fileid;
 			
-			                    html = '<img src="'+ url +'" _aid="'+ret.fileid+'" />';
+			                    html = '<img src="'+ url +'" _aid="'+fileid+'" /><br />';
 			                    me.editor.pasteHTML(html);
 		                    }
 		                } else {

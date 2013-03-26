@@ -10,7 +10,7 @@
  * @author     Oray-Yongfa
  * @copyright  Copyright (c) 2009-2010 Shanghai Best Oray Information S&T CO., Ltd.
  * @link       http://www.tudu.com/
- * @version    $Id: User.php 2733 2013-01-31 01:41:03Z cutecube $
+ * @version    $Id: User.php 2787 2013-03-20 10:52:53Z chenyongfa $
  */
 
 /**
@@ -258,7 +258,7 @@ class Model_User_User extends Model_Abstract
         if (Tudu_Model::hasResource(Tudu_Model::RESOURCE_CONFIG)) {
             $config = Tudu_Model::getResource(Tudu_Model::RESOURCE_CONFIG);
 
-            if ($config['httpsqs']) {
+            /*if ($config['httpsqs']) {
                 $options = $config['httpsqs'];
                 $httpsqs = new Oray_Httpsqs($options['host'], $options['port'], $options['charset'], $options['name']);
 
@@ -270,7 +270,7 @@ class Model_User_User extends Model_Abstract
                 ));
 
                 $httpsqs->put($data);
-            }
+            }*/
         }
 
         // 添加后台操作日志
@@ -454,7 +454,7 @@ class Model_User_User extends Model_Abstract
 
         // 用户头像
         if (!empty($params['avatars'])) {
-            $userInfo['avatartype'] = $params['mime'];
+            $userInfo['avatartype'] = $params['avatartype'];
             $userInfo['avatars']    = $params['avatars'];
 
             /* @var $daoImContact Dao_Im_Contact_Contact */

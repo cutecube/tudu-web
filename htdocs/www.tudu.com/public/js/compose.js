@@ -1713,10 +1713,11 @@ var Capturer = {
 		                    eval('ret=' + response + ';');
 		                } catch (e) {}
 		
-		                if (ret.fileid) {
-		                    var url = '/attachment/img?fid=' + ret.fileid;
+		                var fileid = ret.fileid ? ret.fileid : (ret.data ? ret.data.fileid : null);
+		                if (fileid) {
+		                    var url = '/attachment/img?fid=' + fileid;
 		
-		                    html = '<img src="'+ url +'" _aid="'+ret.fileid+'" />';
+		                    html = '<img src="'+ url +'" _aid="'+fileid+'" /><br />';
 		                    me.editor.pasteHTML(html);
 		                } else {
 		                    TOP.showMessage(TOP.TEXT.CAPTURER_UPLOAD_FILE_ERROR);

@@ -211,7 +211,7 @@ abstract class TuduX_Controller_Base extends Zend_Controller_Action
                     $this->session->isdemo = true;
                 }
 
-                if ($orgId == 'online-app') {
+                if ($this->_user->orgId == 'online-app') {
                     header('P3P: CP=”CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR”');
                 }
 

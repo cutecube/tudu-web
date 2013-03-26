@@ -5,8 +5,6 @@
 <title>{{$LANG.netdisk}}</title>
 {{include file="^style.tpl"}}
 <script type="text/javascript">
-document.domain = 'tudu.com';
-
 function getTop() {
     return parent;
 }
@@ -40,7 +38,7 @@ var TOP = getTop();
 
 <script type="text/javascript">
 <!--
-var _$ = parent.getJQ(), _AUTO_ID = 0;
+var _AUTO_ID = 0;
 
 function uploadCallback(data) {
 	var filename =$('#filedata').val();

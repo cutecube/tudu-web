@@ -10,7 +10,7 @@
  * @subpackage Org
  * @copyright  Copyright (c) 2009-2010 Shanghai Best Oray Information S&T CO., Ltd.
  * @link       http://www.oray.com/
- * @version    $Id: Org.php 2590 2012-12-31 10:04:53Z cutecube $
+ * @version    $Id: Org.php 2794 2013-03-26 06:35:42Z chenyongfa $
  */
 
 /**
@@ -109,6 +109,10 @@ class Dao_Md_Org_Org extends Oray_Dao_Abstract
 
         if (isset($params['status']) && is_int($params['status'])) {
             $bind['status'] = $params['status'];
+        }
+
+        if (isset($params['ishttps'])) {
+            $bind['is_https'] = $params['ishttps'];
         }
 
         if (isset($params['expiredate']) && is_int($params['expiredate'])) {

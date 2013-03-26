@@ -321,21 +321,36 @@ class FlowController extends TuduX_Controller_Base
             $daoFile = $this->getDao('Dao_Td_Attachment_File');
 
             foreach ($post['nd-attach'] as $ndFileId) {
-                $attach = $daoAttachment->getAttachment(array('fileid' => $ndFileId));
+                $fileId = $ndFileId;
+                $attach = $daoAttachment->getAttachment(array('fileid' => $fileId));
                 if (null !== $attach) {
                     $attachment[] = array(
-                        'fileid' => $ndFileId,
+                        'fileid' => $fileId,
                         'isattach' => true
                     );
                     continue ;
                 }
 
-                $file = $daoNdFile->getFile(array('uniqueid' => $this->_user->uniqueId, 'fileid' => $ndFileId));
+                $file = $daoNdFile->getFile(array('uniqueid' => $this->_user->uniqueId, 'fileid' => $fileId));
+                if (null === $file) {
+                    continue;
+                }
+                if ($file->fromFileId) {
+                    $fileId = $file->fromFileId;
+                    $file   = $daoNdFile->getFile(array('uniqueid' => $file->fromUniqueId, 'fileid' => $fileId));
+                    if (null === $file) {
+                        continue;
+                    }
+                }
+                if ($file->attachFileId) {
+                    $fileId = $file->attachFileId;
+                }
                 if ($file) {
                     $fid = $daoFile->createFile(array(
                         'uniqueid' => $this->_user->uniqueId,
-                        'fileid'   => $ndFileId,
+                        'fileid'   => $fileId,
                         'orgid'    => $this->_user->orgId,
+                        'isnetdisk'=> 1,
                         'filename' => $file->fileName,
                         'path'     => $file->path,
                         'type'     => $file->type,
@@ -818,8 +833,8 @@ class FlowController extends TuduX_Controller_Base
         $sid  = $this->_sessionId;
         $auth = md5($sid . $fid . $this->session->auth['logintime']);
 
-        $url = $this->options['sites']['file']
-             . $this->options['upload']['cgi']['download']
+        $url = !empty($this->options['sites']['file']) ? $this->options['sites']['file'] : $this->options['sites']['www'];
+        $url = $this->options['upload']['cgi']['download']
              . "?sid={$sid}&fid={$fid}&auth={$auth}";
 
         if ($act) {

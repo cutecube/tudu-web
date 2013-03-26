@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>预览 - 登录图度</title>
 {{if $loginskin.value == 'SYS:default'}}
-<link href="{{$options.sites.www}}/css/register.css" type="text/css" rel="stylesheet" />
+<link href="{{$options.sites.www}}/css/login.css" type="text/css" rel="stylesheet" />
 <!--[if IE 6]>
-<script type="text/javascript" src="{{$options.sites.www}}/js/ie6-min.js"></script>
+<script type="text/javascript" src="{{$options.sites.www}}/js/ie6-fix.js"></script>
 <script type="text/javascript">
 DD_belatedPNG.fix('.png, background,img');
 </script>
@@ -53,7 +53,7 @@ DD_belatedPNG.fix('.png, background,img');
                                 </tr>
                                 <tr id="seccode-tr">
                                     <th align="right" valign="top" style="padding-top:22px;padding-bottom:0">验证码：</th>
-                                    <td align="left" style="padding-bottom:0"><input name="seccode" type="text" size="30" class="input-text" style="width:280px;" /><br /><img id="img-seccode" src="{{$options.sites.www}}/img/spacer.gif" style="margin:14px 10px 10px 0;vertical-align:middle" /><a href="javascript:void(0)" onclick="refreshSeccode();return false;">点击换一张</a></td>
+                                    <td align="left" style="padding-bottom:0"><input name="seccode" type="text" size="30" class="input-text" style="width:280px;" /><br /><img id="img-seccode" src="{{$options.sites.www}}/images/spacer.gif" style="margin:14px 10px 10px 0;vertical-align:middle" /><a href="javascript:void(0)" onclick="refreshSeccode();return false;">点击换一张</a></td>
                                 </tr>
                                 <tr>
                                     <th align="right">&nbsp;</th>
@@ -125,7 +125,7 @@ $(function(){
 });
 </script>
 {{else}}
-<link href="{{$options.sites.www}}/css/login.css" type="text/css" rel="stylesheet">
+<link href="{{$options.sites.www}}/css/custom.css" type="text/css" rel="stylesheet">
 {{if $loginskin.type == 'color'}}
 <style type="text/css">
 body {background-color:{{$loginskin.color}};}
@@ -188,7 +188,7 @@ body {background-color:{{$loginskin.color}};}
                     </tr>
                     <tr id="seccode-tr">
                         <th align="right" valign="top" style="padding-top:18px;padding-bottom:0">验证码：</th>
-                        <td align="left" style="padding-bottom:0"><input  name="seccode" type="text" size="30" class="text"><br /><label><img id="img-seccode" src="{{$options.sites.www}}/img/spacer.gif" style="margin:14px 10px 10px 0;vertical-align:middle" />&nbsp;&nbsp;<a href="javascript:void(0)" onclick="refreshSeccode();return false;">点击换一张</a></label></td>
+                        <td align="left" style="padding-bottom:0"><input  name="seccode" type="text" size="30" class="text"><br /><label><img id="img-seccode" src="{{$options.sites.www}}/images/spacer.gif" style="margin:14px 10px 10px 0;vertical-align:middle" />&nbsp;&nbsp;<a href="javascript:void(0)" onclick="refreshSeccode();return false;">点击换一张</a></label></td>
                     </tr>
                     <tr>
                         <th align="right">&nbsp;</th>
@@ -248,7 +248,7 @@ $(function(){
 });
 </script>
 {{if $loginskin.type == 'pic'}}
-<script type="text/javascript" src="{{$options.sites.www}}/js/jquery/jquery.fullscreen.js"></script>
+<script type="text/javascript" src="{{$options.sites.www}}/js/jquery.fullscreen.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
     var img = new Image();
@@ -256,7 +256,7 @@ $(document).ready(function () {
     img.height = 1123;
 
     {{if $loginskin.issystem}}
-    var src="{{$options.sites.www}}/img/login/{{$loginskin.pic}}";
+    var src="{{$options.sites.www}}/images/login/{{$loginskin.pic}}";
     {{else}}
     var src="{{$options.sites.www}}/file/?hash={{$loginskin.pic}}&type=loginpic";
     {{/if}}
