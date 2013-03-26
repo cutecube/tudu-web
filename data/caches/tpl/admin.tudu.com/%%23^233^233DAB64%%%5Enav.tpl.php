@@ -1,3 +1,0 @@
-<?php /* Smarty version 2.6.26, created on 2013-03-15 13:28:33
-         compiled from user/%5Enav.tpl */ ?>
-<?php echo '<div class="tabs"><a href="'; ?><?php echo $this->_tpl_vars['basepath']; ?><?php echo '/user/user/add"'; ?><?php if ($this->_tpl_vars['tab'] == 'add'): ?><?php echo ' class="current"'; ?><?php endif; ?><?php echo '><strong>添加账号</strong></a><a href="'; ?><?php echo $this->_tpl_vars['basepath']; ?><?php echo '/user/user/import.html"'; ?><?php if ($this->_tpl_vars['tab'] == 'import'): ?><?php echo ' class="current"'; ?><?php endif; ?><?php echo '><strong>批量导入</strong></a></div>'; ?>
